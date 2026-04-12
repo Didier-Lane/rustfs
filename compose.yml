@@ -1,0 +1,64 @@
+name: &project_name ${COMPOSE_PROJECT_NAME:-rustfs}
+
+services:
+  rustfs:
+    image: ${DOCKER_IMAGE:-rustfs:latest}
+    build:
+      context: .
+      args:
+        RUSTFS_VERSION: ${RUSTFS_VERSION:-latest}
+        RUSTFS_DIGEST: ${RUSTFS_DIGEST}
+    container_name: *project_name
+    security_opt:
+      - no-new-privileges:true
+    ports:
+      - 9000:9000 # S3 API port
+      - 9001:9001 # Console port
+    environment:
+      RUSTFS_ACCESS_KEY: "${RUSTFS_ACCESS_KEY:-rustfsadmin}"
+      RUSTFS_SECRET_KEY: "${RUSTFS_SECRET_KEY:-rustfsadmin}"
+      RUSTFS_OBS_LOGGER_LEVEL: ${RUSTFS_OBS_LOGGER_LEVEL:-info}
+      RUSTFS_OBS_LOG_DIRECTORY: ""
+      RUSTFS_TLS_PATH: /opt/tls
+      RUSTFS_REGION: eu-west-3
+      # Object Cache
+      RUSTFS_OBJECT_CACHE_ENABLE: "true"
+      RUSTFS_OBJECT_CACHE_TTL_SECS: 300
+
+    volumes:
+      - data:/data
+      - logs:/app/logs
+      - tls:/opt/tls
+    restart: ${RESTART_POLICY:-unless-stopped}
+
+  # RustFS volume permissions fixer service
+  volume-permission-helper:
+    image: alpine:${ALPINE_VERSION:-latest}@${ALPINE_DIGEST}
+    container_name: ${COMPOSE_PROJECT_NAME:-rustfs}-vol-helper
+    volumes:
+      - data:/data
+      - logs:/logs
+      - tls:/opt/tls
+      - ${TLS_KEY}:/tmp/tls.key:ro,z
+      - ${TLS_CERT}:/tmp/tls.crt:ro,z
+
+    command: >
+      sh -c "
+        cp /tmp/tls.key /opt/tls/rustfs_key.pem &&
+        cp /tmp/tls.crt /opt/tls/rustfs_cert.pem &&
+        chown -R 10001:10001 /data /logs /opt/tls &&
+        echo 'Volume Permissions fixed' &&
+        exit 0
+      "
+    restart: "no"
+
+networks:
+  default:
+    name: *project_name
+    driver: bridge
+    enable_ipv6: true
+
+volumes:
+  data:
+  logs:
+  tls:

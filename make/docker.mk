@@ -8,12 +8,12 @@ DOCKER_BUILDKIT            	:= 1
 BUILDKIT_PROGRESS          	?= auto
 
 # https://hub.docker.com/r/rustfs/rustfs
-RUSTFS_VERSION				?= 1.0.0-alpha.93
-RUSTFS_DIGEST				?= sha256:28bef1092e735427086d083d32b3e2d5eb125922fbd913cb8ef3d29c344cf546
+RUSTFS_VERSION				?= 1.0.0-alpha.94
+RUSTFS_DIGEST				?= sha256:4923778d3abd83c8dff66904c6eba39c171ec2bca987dee3bd8d6cb4d72b491e
 
 # https://hub.docker.com/_/alpine
-ALPINE_VERSION				?= 3.23.3
-ALPINE_DIGEST				?= sha256:59855d3dceb3ae53991193bd03301e082b2a7faa56a514b03527ae0ec2ce3a95
+ALPINE_VERSION				?= 3.23.4
+ALPINE_DIGEST				?= sha256:4d889c14e7d5a73929ab00be2ef8ff22437e7cbc545931e52554a7b00e123d8b
 
 DOCKER_IMAGE				?= $(COMPOSE_PROJECT_NAME):$(RUSTFS_VERSION)
 

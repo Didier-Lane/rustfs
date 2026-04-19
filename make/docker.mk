@@ -34,7 +34,7 @@ endef
 
 .PHONY: build
 build: # 🐋 Builds The RustFS image
-	if [[ -z "$$( $(get_docker_image) )" || "$(BUILD)" =~ ^(true|yes|1)$$ ]]; then
+	if [[ -z "$$( $(get_docker_image) )" ]] || [[ ! -z "$(BUILD)" ]]; then
 		docker compose build \
 			--build-arg TLS_CA="$$( cat $(TLS_CA) )"
 	fi

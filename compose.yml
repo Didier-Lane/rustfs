@@ -1,12 +1,12 @@
-name: &project_name ${COMPOSE_PROJECT_NAME:-rustfs}
+name: &project_name ${COMPOSE_PROJECT_NAME}
 
 services:
   rustfs:
-    image: ${DOCKER_IMAGE:-rustfs:latest}
+    image: ${DOCKER_IMAGE}
     build:
       context: .
       args:
-        RUSTFS_VERSION: ${RUSTFS_VERSION:-latest}
+        RUSTFS_VERSION: ${RUSTFS_VERSION}
         RUSTFS_DIGEST: ${RUSTFS_DIGEST}
     container_name: *project_name
     security_opt:
@@ -15,9 +15,9 @@ services:
       - 9000:9000 # S3 API port
       - 9001:9001 # Console port
     environment:
-      RUSTFS_ACCESS_KEY: "${RUSTFS_ACCESS_KEY:-rustfsadmin}"
-      RUSTFS_SECRET_KEY: "${RUSTFS_SECRET_KEY:-rustfsadmin}"
-      RUSTFS_OBS_LOGGER_LEVEL: ${RUSTFS_OBS_LOGGER_LEVEL:-info}
+      RUSTFS_ACCESS_KEY: "${RUSTFS_ACCESS_KEY}"
+      RUSTFS_SECRET_KEY: "${RUSTFS_SECRET_KEY}"
+      RUSTFS_OBS_LOGGER_LEVEL: ${RUSTFS_OBS_LOGGER_LEVEL}
       RUSTFS_OBS_LOG_DIRECTORY: ""
       RUSTFS_TLS_PATH: /opt/tls
       RUSTFS_REGION: eu-west-3
@@ -29,12 +29,12 @@ services:
       - data:/data
       - logs:/app/logs
       - tls:/opt/tls
-    restart: ${RESTART_POLICY:-unless-stopped}
+    restart: ${RESTART_POLICY}
 
   # RustFS volume permissions fixer service
   volume-permission-helper:
-    image: alpine:${ALPINE_VERSION:-latest}@${ALPINE_DIGEST}
-    container_name: ${COMPOSE_PROJECT_NAME:-rustfs}-vol-helper
+    image: alpine:${ALPINE_VERSION}@${ALPINE_DIGEST}
+    container_name: ${COMPOSE_PROJECT_NAME}-vol-helper
     volumes:
       - data:/data
       - logs:/logs

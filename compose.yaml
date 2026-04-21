@@ -7,42 +7,41 @@ services:
     security_opt:
       - no-new-privileges:true
     ports:
-      - 9000:9000 # S3 API port
-      - 9001:9001 # Console port
+      - 9000:9000
+      - 9001:9001
     environment:
       RUSTFS_ACCESS_KEY_FILE: /run/secrets/access_key
       RUSTFS_SECRET_KEY_FILE: /run/secrets/secret_key
       RUSTFS_OBS_LOGGER_LEVEL: ${RUSTFS_OBS_LOGGER_LEVEL}
       RUSTFS_OBS_LOG_DIRECTORY: ""
       RUSTFS_TLS_PATH: /run/secrets
-      RUSTFS_TLS_CA: tls_ca
-      RUSTFS_TLS_KEY: tls_key
-      RUSTFS_TLS_CERT: tls_cert
       RUSTFS_REGION: eu-west-3
       RUSTFS_OBJECT_CACHE_ENABLE: "true"
       RUSTFS_OBJECT_CACHE_TTL_SECS: 300
     secrets:
       - access_key
       - secret_key
-      - tls_ca
-      - tls_key
-      - tls_cert
     volumes:
       - data:/data
       - logs:/app/logs
+      - ${TLS_KEY}:/run/secrets/rustfs_key.pem:ro,z
+      - ${TLS_CERT}:/run/secrets/rustfs_cert.pem:ro,z
     restart: ${RESTART_POLICY}
+    healthcheck:
+      test: |
+        curl -fk https://127.0.0.1:9000/health \
+          && curl -fk https://127.0.0.1:9001/rustfs/console/health
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+      start_interval: 10s
 
 secrets:
   access_key:
     environment: "RUSTFS_ACCESS_KEY"
   secret_key:
     environment: "RUSTFS_SECRET_KEY"
-  tls_ca:
-    environment: "TLS_CA"
-  tls_key:
-    environment: "TLS_KEY"
-  tls_cert:
-    environment: "TLS_CERT"
 
 networks:
   default:

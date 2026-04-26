@@ -1,8 +1,8 @@
 COMPOSE_PROJECT_NAME		?= rustfs
 
 # https://hub.docker.com/r/rustfs/rustfs
-RUSTFS_VERSION				?= 1.0.0-alpha.98
-RUSTFS_DIGEST				?= sha256:d1da61afc05018125ff5228df8afff80c71890a23109cc89bd46c87bc4ca8909
+RUSTFS_VERSION				?= 1.0.0-alpha.99
+RUSTFS_DIGEST				?= sha256:a92846f09d9f1ccc41aeb9a9f1e8049093cc23b055d2b5a144e77525c1de1b41
 
 # Docker container restart policy
 RESTART_POLICY				?= unless-stopped

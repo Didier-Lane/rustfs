@@ -39,9 +39,9 @@ services:
 
 secrets:
   access_key:
-    environment: "RUSTFS_ACCESS_KEY"
+    environment: "AWS_ACCESS_KEY_ID"
   secret_key:
-    environment: "RUSTFS_SECRET_KEY"
+    environment: "AWS_SECRET_ACCESS_KEY"
 
 networks:
   default:

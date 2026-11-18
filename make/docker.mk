@@ -1,13 +1,21 @@
 COMPOSE_PROJECT_NAME		?= rustfs
 
 # https://hub.docker.com/r/rustfs/rustfs
-RUSTFS_VERSION				?= 1.0.0-beta.11
-RUSTFS_DIGEST				?= sha256:e4151ec4728f4d39a714a2c5f6e1f4bc8e0789fe5af4874b95121bae39c6cd12
+RUSTFS_VERSION				?= 1.0.6
+RUSTFS_DIGEST				?= sha256:0dff1515b3c52b5ce8c5df2263420c7f93ae1c5d07cca79e19e57cff86b84c85
 
 # Docker container restart policy
 RESTART_POLICY				?= unless-stopped
 
 RUSTFS_OBS_LOGGER_LEVEL		?= info
+
+RUSTFS_REGION				?= eu-west-3
+
+RUSTFS_ACCESS_KEY			?= $(shell $(random_hash))
+RUSTFS_SECRET_KEY			?= $(shell $(random_hash))
+
+RUSTFS_TLS_KEY				?= ~/.ssl/rustfs/rustfs.key
+RUSTFS_TLS_CERT				?= ~/.ssl/rustfs/rustfs.crt
 
 .PHONY: config
 config: # 🐋 Renders the Docker Compose file

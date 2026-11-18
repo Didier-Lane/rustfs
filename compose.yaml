@@ -15,7 +15,7 @@ services:
       RUSTFS_OBS_LOGGER_LEVEL: ${RUSTFS_OBS_LOGGER_LEVEL}
       RUSTFS_OBS_LOG_DIRECTORY: ""
       RUSTFS_TLS_PATH: /run/secrets
-      RUSTFS_REGION: eu-west-3
+      RUSTFS_REGION: ${RUSTFS_REGION}
       RUSTFS_OBJECT_CACHE_ENABLE: "true"
       RUSTFS_OBJECT_CACHE_TTL_SECS: 300
     secrets:
@@ -24,8 +24,8 @@ services:
     volumes:
       - data:/data
       - logs:/app/logs
-      - ${TLS_KEY}:/run/secrets/rustfs_key.pem:ro,z
-      - ${TLS_CERT}:/run/secrets/rustfs_cert.pem:ro,z
+      - ${RUSTFS_TLS_KEY}:/run/secrets/rustfs_key.pem:ro,z
+      - ${RUSTFS_TLS_CERT}:/run/secrets/rustfs_cert.pem:ro,z
     restart: ${RESTART_POLICY}
     healthcheck:
       test: |
@@ -39,9 +39,9 @@ services:
 
 secrets:
   access_key:
-    environment: "AWS_ACCESS_KEY_ID"
+    environment: "RUSTFS_ACCESS_KEY"
   secret_key:
-    environment: "AWS_SECRET_ACCESS_KEY"
+    environment: "RUSTFS_SECRET_KEY"
 
 networks:
   default:

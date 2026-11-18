@@ -42,21 +42,16 @@ Those are the variables being persisted to the [`.env`] file when running `make`
 
 | Name                      | Description                                                   | Default value
 |:--                        |:--                                                            |:--
-| `COMPOSE_PROJECT_NAME`    | The name of the Docker Compose project                        | `1.0.0-alpha.99`
-| `RUSTFS_VERSION`          | The tag of the [RustFS image]                                 | `rustfs`
-| `RUSTFS_DIGEST`           | The digest of the [RustFS image] tag                          | `sha256:a92846f09d9f1ccc41aeb9a9f1e8049093cc23b055d2b5a144e77525c1de1b41`
+| `COMPOSE_PROJECT_NAME`    | The name of the Docker Compose project                        | `rustfs`
+| `RUSTFS_VERSION`          | The tag of the [RustFS image]                                 | `1.0.6`
+| `RUSTFS_DIGEST`           | The digest of the [RustFS image] tag                          | `sha256:0dff1515b3c52b5ce8c5df2263420c7f93ae1c5d07cca79e19e57cff86b84c85`
 | `RESTART_POLICY`          | The [restart policy] of the container                         | `unless-stopped`
 | `RUSTFS_OBS_LOGGER_LEVEL` | The [RustFS] log level                                        | `info`
-| `TLS_KEY`                 | The [RustFS TLS] key                                          | `~/.ssl/rustfs/rustfs.key`
-| `TLS_CERT`                | The [RustFS TLS] certificate                                  | `~/.ssl/rustfs/rustfs.crt`
-
->[!IMPORTANT]
->The RustFS authentication relies on the following environment variables
->
->- `AWS_ACCESS_KEY_ID`
->- `AWS_SECRET_ACCESS_KEY`
->
->They **must be exported** in the current shell context to be used as Docker Compose secrets
+| `RUSTFS_REGION`           | The [RustFS] S3 API region                                    | `eu-west-3`
+| `RUSTFS_ACCESS_KEY`       | The [RustFS Credentials] access key                           | random hash
+| `RUSTFS_SECRET_KEY`       | The [RustFS Credentials] secret key                           | random hash
+| `RUSTFS_TLS_KEY`          | The [RustFS TLS] key                                          | `~/.ssl/rustfs/rustfs.key`
+| `RUSTFS_TLS_CERT`         | The [RustFS TLS] certificate                                  | `~/.ssl/rustfs/rustfs.crt`
 
 [RustFS]: https://github.com/rustfs/rustfs
 [Docker]: https://www.docker.com/
@@ -66,4 +61,5 @@ Those are the variables being persisted to the [`.env`] file when running `make`
 [environment variables]: #environment-variables
 [RustFS image]: https://hub.docker.com/r/rustfs/rustfs
 [restart policy]: https://docs.docker.com/reference/compose-file/services/#restart
-[RustFS TLS]: https://docs.rustfs.com/integration/tls-configured.html
+[RustFS TLS]: https://docs.rustfs.com/en/integration/tls-configured
+[RustFS Credentials]: https://docs.rustfs.com/en/reference/environment-variables#credentials--internal
